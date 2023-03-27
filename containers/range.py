@@ -11,47 +11,50 @@ def range(a, b=None, c=None):
     [1, 3]
 
     HINT:
-    If you can figure out how to use the built-in range function 
+    If you can figure out how to use the built-in range function
     (without modifying the test cases!),
     then feel free to do so.
-    That's fairly difficult to do, however, and it's much easier 
+    That's fairly difficult to do, however, and it's much easier
     to just implement this function normally using the yield syntax.
 
     NOTE:
-    For efficiency reasons, Python's built-in range object is written 
+    For efficiency reasons, Python's built-in range object is written
     in the C programming language rather than natively in python.
-    You can find the source code online at 
+    You can find the source code online at
     https://hg.python.org/cpython/file/ee7b713fec71/Objects/rangeobject.c
     The link takes you to a file that is 1445 lines long,
     and all it does is implement this simple functionality.
-    My easy to read Python implementation of this function is 
+    My easy to read Python implementation of this function is
     just 15 lines long.
-    (And with some code golf I also wrote a less readable version 
+    (And with some code golf I also wrote a less readable version
     that is only 4 lines.)
-    It is very common for C programs to be 
+    It is very common for C programs to be
     100x longer than their corresponding python programs.
     C code must manage lots of details about the computer 
     manually that python code automates for you.
-    Carefully written C code can be faster than the corresponding 
-    python code because it can remove some of the overhead of this 
+    Carefully written C code can be faster than the corresponding
+    python code because it can remove some of the overhead of this
     automation process,
     but the resulting code is much longer and harder to read/write.
     '''
-    f0 = 1
-    f1 = 1
-    if n is not None:
-        if n >= 1:
-            yield f0
-        if n >= 2:
-      
+    if b is None:
+        start, stop = 0, a
+    else:
+        start, stop = a, b
 
-            f1 = f2
-            yield f2
-    if n is None:
-        yield f0
-        yield f1
-        while True:
-            f2 = f1 + f0
-            f0 = f1
-            f1 = f2
-            yield f2
+    if c is None:
+        step = 1
+    else:
+        step = c
+
+    if step == 0:
+        return
+
+    if (step > 0 and start >= stop) or (step < 0 and start <= stop):
+        return
+
+    current = start
+
+    while (step > 0 and current < stop) or (step < 0 and current > stop):
+        yield current
+        current += step

@@ -71,6 +71,7 @@ class Fib:
     def __iter__(self):
         return FibIter(self.n)
 
+
 class FibIter:
     '''
     This is the iterator helper class for the Fib class.
@@ -92,9 +93,10 @@ class FibIter:
         self.y = value
         return value
 
+
 def fib_yield(n=None):
     '''
-    This function returns a generator that computes the first n 
+    This function returns a generator that computes the first n
     fibonacci numbers.
     If n is None, then the generator is infinite.
     '''
@@ -103,9 +105,7 @@ def fib_yield(n=None):
     if n is not None:
         if n >= 1:
             yield f0
-        if n >= 2:
-      
-
+        if n >= 2:      
             f1 = f2
             yield f2
     if n is None:
