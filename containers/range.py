@@ -30,7 +30,7 @@ def range(a, b=None, c=None):
     that is only 4 lines.)
     It is very common for C programs to be
     100x longer than their corresponding python programs.
-    C code must manage lots of details about the computer 
+    C code must manage lots of details about the computer
     manually that python code automates for you.
     Carefully written C code can be faster than the corresponding
     python code because it can remove some of the overhead of this
