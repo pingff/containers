@@ -106,8 +106,8 @@ def fib_yield(n=None):
         if n >= 1:
             yield f0
         if n >= 2:
-            yield f2
-        for i in range(n-2):
+            yield f1
+        for i in range(n - 2):
             f2 = f1 + f0
             f0 = f1
             f1 = f2
