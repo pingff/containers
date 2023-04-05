@@ -71,8 +71,8 @@ class Heap(BinaryTree):
         right_child_ok = not node.right or node.value <= node.right.value
 
         return left_child_ok and right_child_ok and \
-           Heap._is_heap_satisfied(node.left) and \
-           Heap._is_heap_satisfied(node.right)
+                Heap._is_heap_satisfied(node.left) and \
+                Heap._is_heap_satisfied(node.right)
 
     def insert(self, value):
         '''
@@ -100,7 +100,7 @@ class Heap(BinaryTree):
             self.root = new_node
             return
         Heap._insert(self.root, new_node, binary_str)
-        
+
     @staticmethod
     def _insert(node, new_node, binary_str):
         if binary_str[0] == '0':

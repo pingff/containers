@@ -43,7 +43,6 @@ class BST(BinaryTree):
         '''
         return type(self).__name__ + '(' + str(self.to_list('inorder')) + ')'
 
-<<<<<<< HEAD
     def __eq__(self, other):
         '''
         This method checks to see if the contents of self and other are equal.
