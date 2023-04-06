@@ -64,15 +64,14 @@ class Heap(BinaryTree):
         FIXME:
         Implement this method.
         '''
-        if not node:
-            return True
-
-        left_child_ok = not node.left or node.value <= node.left.value
-        right_child_ok = not node.right or node.value <= node.right.value
-
-        return left_child_ok and right_child_ok and \
-            Heap._is_heap_satisfied(node.left) and \
-            Heap._is_heap_satisfied(node.right)
+        ret = True
+        if node.left:
+            ret &= node.value <= node.left.value
+            ret &= Heap._is_heap_satisfied(node.left)
+        if node.right:
+            ret &= node.value <= node.right.value
+            ret &= Heap._is_heap_satisfied(node.right)
+        return ret
 
     def insert(self, value):
         '''
@@ -95,26 +94,26 @@ class Heap(BinaryTree):
         '''
         self.num_nodes += 1
         binary_str = bin(self.num_nodes)[3:]
-        new_node = Node(value)
-        if self.root is None:
-            self.root = new_node
-            return
-        Heap._insert(self.root, new_node, binary_str)
+
+        if not self.root:
+            self.root = Node(value)
+        else:
+            Heap._insert(self.root, value, binary_str)
 
     @staticmethod
-    def _insert(node, new_node, binary_str):
+    def _insert(node, value, binary_str):
         if binary_str[0] == '0':
-            if len(binary_str) == 1:
-                node.left = new_node
+            if node.left is None:
+                node.left = Node(value)
             else:
-                Heap._insert(node.left, new_node, binary_str[1:])
+                Heap._insert(node.left, value, binary_str[1:])
             if node.value > node.left.value:
                 node.value, node.left.value = node.left.value, node.value
-        if binary_str[0] == '1':
-            if len(binary_str) == 1:
-                node.right = new_node
+        elif binary_str[0] == '1':
+            if node.right is None:
+                node.right = Node(value)
             else:
-                Heap._insert(node.right, new_node, binary_str[1:])
+                Heap._insert(node.right, value, binary_str[1:])
             if node.value > node.right.value:
                 node.value, node.right.value = node.right.value, node.value
 
@@ -157,3 +156,64 @@ class Heap(BinaryTree):
         It's possible to do it with only a single helper (or no helper at all),
         but I personally found dividing up the code into two made the most sense.
         '''
+        if self.num_nodes == 1:
+            self.root = None
+            self.num_nodes -= 1
+        else:
+            binary_str = bin(self.num_nodes)[3:]
+            newvalue = Heap._find_bottom_right(self.root, binary_str)
+            self.root.value = newvalue
+            Heap._remove_bottom_right(self.root, binary_str)
+            Heap._trickle(self.root)
+            self.num_nodes -= 1
+
+    @staticmethod
+    def _trickle(node):
+        while node.left or node.right:
+            if node.right is None or node.left.value < node.right.value:
+                min_new_node = node.left
+            else:
+                min_new_node = node.right
+            if node.value > min_new_node.value:
+                node.value, min_new_node.value = min_new_node.value, node.value
+                node = min_new_node
+            else:
+                break
+
+    @staticmethod
+    def _remove_bottom_right(node, binary_str):
+        path = binary_str[:-1]
+        curr_node = node
+        for direction in path:
+            if direction == "0":
+                curr_node = curr_node.left
+            else:
+                curr_node = curr_node.right
+        if binary_str[-1] == "0":
+            new_node = curr_node.left
+            curr_node.left = None
+        else:
+            new_node = curr_node.right
+            curr_node.right = None
+        return new_node.value
+
+    @staticmethod
+    def _find_bottom_right(node, binary_str):
+        path = binary_str[:-1]
+        curr_node = node
+        for direction in path:
+            if direction == "0":
+                curr_node = curr_node.left
+            else:
+                curr_node = curr_node.right
+        if binary_str[-1] == "0":
+            return Heap._find_deepest_right(curr_node.left)
+        else:
+            return Heap._find_deepest_right(curr_node.right)
+
+    @staticmethod
+    def _find_deepest_right(node):
+        if not node.right:
+            return node.value
+        else:
+            return Heap._find_deepest_right(node.right)
