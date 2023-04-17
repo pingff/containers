@@ -47,6 +47,7 @@ class BST(BinaryTree):
         '''
         This method checks to see if the contents of self and other are equal.
         '''
+<<<<<<< HEAD
         a = self.to_list('inorder')
         b = other.to_list('inorder')
         x = True
@@ -56,6 +57,16 @@ class BST(BinaryTree):
             else:
                 x = False
         return x
+=======
+        if self is None or other is None:
+            return False
+        list_1 = self.to_list('inorder')
+        list_2 = other
+        if list_1 == list_2:
+            return True
+        else:
+            return False
+>>>>>>> heap
 
     def is_bst_satisfied(self):
         '''
